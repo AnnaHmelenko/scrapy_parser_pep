@@ -27,7 +27,7 @@ class PepParsePipeline:
 
     def close_spider(self, spider):
         feeds = spider.settings.get('FEEDS', {})
- 
+
         # При запуске автотестов путь для выгрузки результатов подменяется
         # через FEEDS и указывает на временную директорию tests/_tmp/results.
         # Поэтому для тестового режима директория берётся из FEEDS, чтобы оба
@@ -53,7 +53,8 @@ class PepParsePipeline:
             results_dir)
 
         # В штатном режиме pep_*.csv создаётся через FEEDS Scrapy.
-        # Дополнительная запись ниже выполняется только для тестовой директории,
+        # Дополнительная запись ниже выполняется
+        # только для тестовой директории,
         # так как автотест ожидает наличие двух CSV-файлов именно в tests/_tmp.
         if is_test_mode:
             pep_filename = results_dir / f'pep_{timestamp}.csv'
