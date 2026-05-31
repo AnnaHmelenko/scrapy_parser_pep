@@ -39,8 +39,7 @@ class PepParsePipeline:
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
         is_test_mode = (
-            '_tmp' in str(results_dir)
-            or 'tests' in str(results_dir)
+            '_tmp' in str(results_dir) or 'tests' in str(results_dir)
         )
 
         if is_test_mode:
