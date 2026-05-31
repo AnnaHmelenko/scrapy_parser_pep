@@ -1,14 +1,25 @@
-# settings.py
+from pathlib import Path
+
+# Константа с именем бота
 BOT_NAME = 'pep_parse'
 
-SPIDER_MODULES = ['pep_parse.spiders']
-NEWSPIDER_MODULE = 'pep_parse.spiders'
+# Константа с именем паука
+SPIDER_NAME = 'pep'
+
+# Используем константу с именем паука для формирования списка
+SPIDER_MODULES = [f'{BOT_NAME}.spiders']
+
+# Используем константу с именем бота (избавляемся от дублирования)
+NEWSPIDER_MODULE = f'{BOT_NAME}.spiders'
+
+BASE_DIR = Path(__file__).parent.parent
+
+RESULTS_DIR = 'results'
 
 ROBOTSTXT_OBEY = True
 
-# FEEDS настройки (будут работать в обычном запуске)
 FEEDS = {
-    'results/pep_%(time)s.csv': {
+    f'{RESULTS_DIR}/pep_%(time)s.csv': {
         'format': 'csv',
         'fields': ['number', 'name', 'status'],
         'overwrite': True,
@@ -16,5 +27,5 @@ FEEDS = {
 }
 
 ITEM_PIPELINES = {
-    'pep_parse.pipelines.PepParsePipeline': 300,
+    f'{BOT_NAME}.pipelines.PepParsePipeline': 300,
 }
