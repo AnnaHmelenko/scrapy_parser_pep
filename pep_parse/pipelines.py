@@ -32,8 +32,11 @@ class PepParsePipeline:
         # через FEEDS и указывает на временную директорию tests/_tmp/results.
         # Поэтому для тестового режима директория берётся из FEEDS, чтобы оба
         # итоговых файла создавались в одном месте.
-        if feeds and any('_tmp' in str(path) or 'tests' in str(path)
-                    for path in feeds.keys() if path):
+        if feeds and any(
+            '_tmp' in str(path) or 'tests' in str(path)
+            for path in feeds.keys() 
+            if path
+        ):
 
             first_feed_path = next(iter(feeds.keys()))
             if isinstance(first_feed_path, str):
