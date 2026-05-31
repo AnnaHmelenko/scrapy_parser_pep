@@ -34,7 +34,7 @@ class PepParsePipeline:
         # итоговых файла создавались в одном месте.
         if feeds and any(
             '_tmp' in str(path) or 'tests' in str(path)
-            for path in feeds.keys() 
+            for path in feeds.keys()
             if path
         ):
 
@@ -65,8 +65,10 @@ class PepParsePipeline:
                 writer = csv.writer(f)
                 writer.writerow(['number', 'name', 'status'])
                 for item in self.items:
-                    writer.writerow([item['number'], item['name'], item[
-                        'status']])
+                    writer.writerow([
+                        item['number'],
+                        item['name'],
+                        item['status']])
 
         # Pipeline формирует сводный файл с количеством PEP по каждому статусу.
         summary_filename = results_dir / f'status_summary_{timestamp}.csv'
