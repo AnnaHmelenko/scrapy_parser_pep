@@ -67,3 +67,4 @@ class PepParsePipeline:
                 total += count
 
             writer.writerow(['Total', total])
+            
