@@ -4,7 +4,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from pep_parse.settings import BASE_DIR, RESULTS_DIR
+from pep_parse.settings import RESULTS_DIR
 
 
 class PepParsePipeline:
