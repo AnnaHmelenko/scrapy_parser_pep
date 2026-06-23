@@ -16,11 +16,9 @@ class PepParsePipeline:
         return item
 
     def close_spider(self, spider):
-        # Реальная папка, куда Scrapy пишет pep_*.csv (всегда корень проекта/results)
         project_root = Path(__file__).parent.parent
         actual_results_dir = project_root / RESULTS_DIR
 
-        # Папка, указанная в FEEDS (может отличаться в тестах)
         feeds = spider.crawler.settings.get('FEEDS')
         if not feeds:
             feeds = spider.settings.get('FEEDS')
@@ -31,10 +29,8 @@ class PepParsePipeline:
         else:
             target_dir = actual_results_dir
 
-        # Создаём папку, если её нет
         target_dir.mkdir(parents=True, exist_ok=True)
 
-        # Записываем файл со статусами в target_dir
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         summary_path = target_dir / f'status_summary_{timestamp}.csv'
 
@@ -46,8 +42,6 @@ class PepParsePipeline:
             total = sum(self.statuses.values())
             writer.writerow(['Total', total])
 
-        # Если target_dir отличается от actual_results_dir (например, в тестах),
-        # копируем все pep_*.csv из actual_results_dir в target_dir
         if target_dir != actual_results_dir:
             for pep_file in actual_results_dir.glob('pep_*.csv'):
                 shutil.copy2(pep_file, target_dir / pep_file.name)
