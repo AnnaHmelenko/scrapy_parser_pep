@@ -5,8 +5,8 @@ from pep_parse.items import PepParseItem
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
-    allowed_domains = ['peps.python.org']
-    # Связываем start_urls с allowed_domains через list comprehension
+    DOMAIN = 'peps.python.org'   # вынесено в константу
+    allowed_domains = [DOMAIN]
     start_urls = [f'https://{domain}/' for domain in allowed_domains]
 
     def parse(self, response):
