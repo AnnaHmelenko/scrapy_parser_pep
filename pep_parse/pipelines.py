@@ -16,9 +16,11 @@ class PepParsePipeline:
         return item
 
     def close_spider(self, spider):
-        project_root = Path(__file__).parent.parent
-        actual_results_dir = project_root / RESULTS_DIR
+        # Реальная папка результатов (не зависит от подмены BASE_DIR в тестах)
+        real_project_root = Path(__file__).parent.parent
+        actual_results_dir = real_project_root / RESULTS_DIR
 
+        # Целевая папка из FEEDS (если есть) или fallback на actual_results_dir
         feeds = spider.crawler.settings.get('FEEDS')
         if not feeds:
             feeds = spider.settings.get('FEEDS')
@@ -29,8 +31,14 @@ class PepParsePipeline:
         else:
             target_dir = actual_results_dir
 
+        # Если существует папка tests/_tmp, значит мы в тестах, пишем туда
+        test_tmp = Path('tests/_tmp')
+        if test_tmp.exists():
+            target_dir = test_tmp / RESULTS_DIR
+
         target_dir.mkdir(parents=True, exist_ok=True)
 
+        # Запись статусного файла
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         summary_path = target_dir / f'status_summary_{timestamp}.csv'
 
@@ -42,6 +50,8 @@ class PepParsePipeline:
             total = sum(self.statuses.values())
             writer.writerow(['Total', total])
 
-        if target_dir != actual_results_dir:
+        # Копируем pep_*.csv из реальной папки в target_dir, если их там нет
+        pep_files_target = list(target_dir.glob('pep_*.csv'))
+        if not pep_files_target:
             for pep_file in actual_results_dir.glob('pep_*.csv'):
                 shutil.copy2(pep_file, target_dir / pep_file.name)
