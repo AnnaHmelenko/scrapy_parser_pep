@@ -1,11 +1,11 @@
 import scrapy
 
 from pep_parse.items import PepParseItem
+from pep_parse.settings import DOMAIN
 
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
-    DOMAIN = 'peps.python.org'   # вынесено в константу
     allowed_domains = [DOMAIN]
     start_urls = [f'https://{domain}/' for domain in allowed_domains]
 
